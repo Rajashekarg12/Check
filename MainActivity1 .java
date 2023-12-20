@@ -1,34 +1,33 @@
-import java.util.Scanner;
+Imports System.Data.SqlClient
 
-public class LoginExample {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+Public Class CodeInjectionExample
+    Private connectionString As String = "Data Source=your_server;Initial Catalog=your_database;User ID=your_username;Password=your_password;"
 
-        System.out.print("Enter username: ");
-        String inputUsername = scanner.nextLine();
+    Public Function ExecuteQuery(inputData As String) As String
+        Dim sqlCommand As String = "SELECT * FROM Users WHERE UserName = '" & inputData & "';"
+        Dim result As String = ""
 
-        System.out.print("Enter password: ");
-        String inputPassword = scanner.nextLine();
+        Using connection As New SqlConnection(connectionString)
+            connection.Open()
 
-        String result = login(inputUsername, inputPassword);
-        System.out.println(result);
-    }
+            Using command As New SqlCommand(sqlCommand, connection)
+                Try
+                    ' This is a simplified example and is vulnerable to SQL injection!
+                    Dim reader As SqlDataReader = command.ExecuteReader()
 
-    public static String login(String username, String password) {
-        // Assume a simple authentication mechanism for demonstration purposes
-        String validUsername = "admin";
-        String validPassword = "secretpassword";
+                    While reader.Read()
+                        ' Process the data or perform other operations
+                        result += $"User ID: {reader("UserID")}, Username: {reader("UserName")}{Environment.NewLine}"
+                    End While
 
-        if (username.equals(validUsername) && password.equals(validPassword)) {
-            return "Login successful";
-        } else {
-            // Insecure error message revealing information
-            if (!username.equals(validUsername)) {
-                return "Error: Invalid username";
-            } else if (!password.equals(validPassword)) {
-                return "Error: Invalid password";
-            }
-        }
-        return "Unknown error";
-    }
-}
+                    reader.Close()
+                Catch ex As Exception
+                    ' Handle exceptions (logging, error reporting, etc.)
+                    result = "Error: " & ex.Message
+                End Try
+            End Using
+        End Using
+
+        Return result
+    End Function
+End Class
