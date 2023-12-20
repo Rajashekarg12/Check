@@ -1,36 +1,34 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.Scanner;
 
-public class UserAuthentication {
+public class LoginExample {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-    public boolean authenticateUser(String username, String password) {
-        boolean isAuthenticated = false;
+        System.out.print("Enter username: ");
+        String inputUsername = scanner.nextLine();
 
-        // Example SQL query vulnerable to SQL injection
-        String sqlQuery = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
+        System.out.print("Enter password: ");
+        String inputPassword = scanner.nextLine();
 
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        String result = login(inputUsername, inputPassword);
+        System.out.println(result);
+    }
 
-            if (resultSet.next()) {
-                isAuthenticated = true;
+    public static String login(String username, String password) {
+        // Assume a simple authentication mechanism for demonstration purposes
+        String validUsername = "admin";
+        String validPassword = "secretpassword";
+
+        if (username.equals(validUsername) && password.equals(validPassword)) {
+            return "Login successful";
+        } else {
+            // Insecure error message revealing information
+            if (!username.equals(validUsername)) {
+                return "Error: Invalid username";
+            } else if (!password.equals(validPassword)) {
+                return "Error: Invalid password";
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return isAuthenticated;
+        return "Unknown error";
     }
-
-    private Connection getConnection() throws SQLException {
-        // Implementing the connection setup (this is a simplified example)
-        // You should use connection pooling and other security best practices
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/mydatabase", "user", "password");
-    }
-
-    // Other methods and functionalities in the class...
 }
