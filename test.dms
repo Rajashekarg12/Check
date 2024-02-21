@@ -1,0 +1,7 @@
+-- REF0001 DD/MM/YYYY Author
+-- Brief explanation of what is being exported
+ 
+set log C:\REF0001_EXPORT.log;
+set output C:\REF0001.dat;
+ 
+export PSDBOWNER;
