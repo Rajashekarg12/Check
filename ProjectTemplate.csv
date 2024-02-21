@@ -1,0 +1,2 @@
+ProjectName,FolderPath,Description,ProjectType,DeploySequence,NextProjectBuildNumber,BranchName,VersionNameSyntax,NextBranchBuildNumber,SparseCheckoutFolders,FDGIT_URL,FDGIT_USER,FDGIT_PASSWORD,BuildWorkflow,DeployWorkflow,BuildTargetGroup,DeployTargetGroup
+a11,FlexDeploy/Rajashekar/CSVTest,,,,,main,"""1.0."" + SequenceNumber",1,,https://github.com/####################.git,Rajashekar,testpwd123,Mule Build,Mule Deploy RTF,DEVELOPMENT,"DEVELOPMENT,TEST"
